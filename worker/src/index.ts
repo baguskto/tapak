@@ -255,6 +255,8 @@ export default {
         return json(await ingestBytes(env, caseId, name, req.headers.get('content-type') ?? 'application/octet-stream', await req.arrayBuffer(), null));
       }
       if (path === '/internal/analyze' && req.method === 'POST') {
+        const wallet = url.searchParams.get('wallet');
+        if (wallet && /^0x[0-9a-fA-F]{40}$/.test(wallet)) await s.updateCase(url.searchParams.get('case')!, { wallet });
         await toEngine(env, { type: 'analyze', caseId: url.searchParams.get('case'), chatId: null });
         return json({ queued: true });
       }
