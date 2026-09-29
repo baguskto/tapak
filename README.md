@@ -59,7 +59,7 @@ Proves: the checked file is identical to the file anchored at a given time; the 
 ```
 contracts/   Foundry project: EvidenceRegistry.sol, DemoUSDT.sol, tests, deploy script
 engine/      Node 22 service for the VPS (AI agent + BSC relayer)
-worker/      Cloudflare Worker (TypeScript): bot webhook, web, Durable Object store
+worker/      Cloudflare Worker (TypeScript): bot webhook, web, Durable Object store; landing page in worker/public (Static Assets)
 demo/        Simulated demo data (receipts + WhatsApp export) — fictional
 docs/        Concept document and pitch deck
 ```

@@ -1,7 +1,7 @@
 // Tapak Worker: Telegram webhook, public web (drafts + verifier), internal API for the VPS engine.
 import { Store } from './store';
 import { verifyToken } from '@clerk/backend';
-import { landingPage, reportPage, verifyPage, appPage, esc } from './pages';
+import { reportPage, verifyPage, appPage, esc } from './pages';
 
 export { Store };
 
@@ -323,7 +323,6 @@ export default {
       const c = await s.caseByToken(k[1]);
       return c ? html(reportPage(c, `${env.EXPLORER}/address/${await registryAddress(env)}`)) : html('<p>Tidak ditemukan</p>', 404);
     }
-    if (path === '/' || path === '') return html(landingPage(env.BOT_USERNAME));
     if (path === '/health') return json({ ok: true });
     return new Response('not found', { status: 404 });
   },

@@ -8,6 +8,8 @@
   "workers_dev": true,
   "routes": [{ "pattern": "tapak.bagusin.site", "custom_domain": true }],
   "observability": { "enabled": true },
+  // Landing page (public/index.html + assets) is served as Workers Static Assets; every other path runs the Worker.
+  "assets": { "directory": "./public" },
   "durable_objects": { "bindings": [{ "name": "STORE", "class_name": "Store" }] },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Store"] }],
   // Workers AI binding: requests go through Cloudflare AI Gateway ("default", auto-created on first request).

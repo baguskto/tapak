@@ -40,25 +40,6 @@ ${body}
 <script>document.querySelectorAll('.cpy').forEach(b=>b.addEventListener('click',async()=>{const t=document.getElementById(b.dataset.t).innerText;try{await navigator.clipboard.writeText(t);b.textContent='Tersalin ✓'}catch(e){const r=document.createRange();r.selectNodeContents(document.getElementById(b.dataset.t));getSelection().removeAllRanges();getSelection().addRange(r);b.textContent='Tekan Ctrl/Cmd+C'}}))</script>
 </body></html>`;
 
-export function landingPage(bot: string) {
-  return layout('Tapak AI', `
-<section class="hero"><div class="wrap">
-  <div class="tag">Copilot respons awal · korban penipuan transfer</div>
-  <h1 style="margin:14px 0 18px">Cintanya palsu.<br>Buktinya tetap utuh.</h1>
-  <p>Baru sadar transfer ke penipu? Tapak AI membantu lima menit pertama: menyiapkan data untuk jalur fraud bank, menyusun draf laporan IASC per rekening tujuan, dan mengunci sidik jari bukti di BNB Chain.</p>
-  <p style="margin-top:26px"><a class="btn" href="https://t.me/${esc(bot)}">Buka @${esc(bot)} di Telegram</a> &nbsp; <a class="btn ghost" href="/app">Masuk ke dashboard</a> &nbsp; <a class="btn ghost" href="/verify">Verifikasi berkas bukti</a></p>
-</div></section>
-<main class="wrap">
-  <div class="urgent" style="margin-top:28px">Langkah pertama selalu: telepon call center bank/e-wallet asal (nomor di balik kartu), pilih jalur fraud, dan minta nomor laporan. Tapak menyiapkan sisanya sambil kamu menunggu.</div>
-  <h2>Cara kerja</h2>
-  <div class="grid g3">
-    <div class="card"><h3>1 · Forward bukti</h3><p class="muted">Screenshot bukti transfer, export chat WhatsApp, dan alamat wallet jika ada.</p></div>
-    <div class="card"><h3>2 · Agen menyusun</h3><p class="muted">7 data per transfer, satu draf IASC per rekening tujuan, kronologi polisi, dan bukti yang masih kurang.</p></div>
-    <div class="card"><h3>3 · Bukti terkunci</h3><p class="muted">SHA-256 tiap berkas dicatat di kontrak EvidenceRegistry (BNB Chain). Siapa pun bisa memeriksanya.</p></div>
-  </div>
-</main>`);
-}
-
 type Analysis = {
   summary: string; drafts: any[]; transfers: any[]; requests: any[]; police_chronology: string; missing: any[];
   totals: { idr: number; usdt: number; estimated_idr: number; usdt_idr_rate: number }; evidence: any[]; anchor: any; manifest_sha256: string; generated_at: string;
