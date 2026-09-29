@@ -1,0 +1,20 @@
+02/06/26 20.41 - Pesan dan panggilan terenkripsi secara end-to-end. [CONTOH SIMULASI - DATA FIKTIF]
+02/06/26 20.41 - Daniel: Selamat malam sayang, aku sudah sampai di pelabuhan Rotterdam
+02/06/26 20.44 - Ratna: Alhamdulillah, hati-hati ya mas
+02/06/26 21.03 - Daniel: Sayang, kapalku tertahan di pelabuhan, butuh biaya dokumen 5 juta. Aku ganti minggu depan ya, rekening agen BCA 1112345678 a.n. D HARTONO
+02/06/26 21.40 - Ratna: Sudah ibu transfer ya mas
+02/06/26 21.41 - Daniel: Terima kasih sayang, kamu penyelamatku
+19/06/26 22.15 - Daniel: Sayang maaf aku sedih sekali, ibuku masuk rumah sakit di Manila. Butuh 12 juta untuk operasi. Tolong kirim ke adikku Mandiri 3330098776120 a.n. R PRATAMA
+20/06/26 07.12 - Ratna: Sudah ibu kirim pagi ini, semoga ibumu cepat sembuh
+08/07/26 19.50 - Daniel: Sayang ada paket hadiah untukmu dari Belanda, tapi kena bea cukai 8,5 juta. Bayar ke petugas BRI 222301004455507 a.n. S WIJAYA
+08/07/26 20.31 - Ratna: Sudah ya mas
+27/07/26 20.22 - Daniel: Sayang, pamanku punya platform trading, profitnya bagus untuk masa depan kita. Coba deposit dulu 1000 USDT ke alamat 0xeF89f601e3E1738E8Ab931f714a986F8E2cb6Bec
+27/07/26 21.05 - Ratna: Sudah ibu belikan USDT dan kirim ya
+12/08/26 20.47 - Daniel: Profit kamu sudah besar sayang, tapi harus top up 25 juta supaya bisa ditarik. Transfer ke BCA 1112345678 a.n. D HARTONO
+12/08/26 21.14 - Ratna: Sudah ibu top up
+03/09/26 18.30 - Daniel: Ada pajak penarikan 10% dulu ya sayang, 1500 USDT ke alamat yang sama
+03/09/26 19.02 - Ratna: Sudah dikirim
+20/09/26 21.11 - Daniel: Terakhir sayang, biaya verifikasi akun 2000 USDT, setelah itu semua bisa ditarik
+20/09/26 21.48 - Ratna: Ini yang terakhir ya mas, uang ibu sudah habis
+22/09/26 09.15 - Ratna: Mas? Kenapa akunnya tidak bisa dibuka?
+23/09/26 10.02 - Ratna: Mas Daniel tolong balas

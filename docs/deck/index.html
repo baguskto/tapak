@@ -1,0 +1,824 @@
+<title>Tapak Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@112,500;112,700;112,800;125,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --navy:#0E1A2B;
+    --navy-2:#16263C;
+    --navy-line:#2B3D55;
+    --paper:#EEF2F5;
+    --paper-2:#E1E7EC;
+    --card:#FFFFFF;
+    --ink:#0E1A2B;
+    --slate:#5B6B7F;
+    --mist:#AFC0D0;
+    --line:#CAD3DC;
+    --teal:#0F8B74;
+    --teal-hi:#5FD3B8;
+    --teal-soft:#D5ECE6;
+    --teal-deep:#0A5F4F;
+    --rose:#E8586B;
+    --rose-soft:#FBE3E6;
+    --rose-deep:#9C2336;
+    --amber:#F2A33A;
+    --amber-soft:#FCEBD2;
+    --orange:#EE7A2F;
+    --grey-dot:#B8C2CC;
+    --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+    --body:"Plus Jakarta Sans","Segoe UI",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  }
+  html,body{height:100%}
+  body{margin:0;background:var(--navy);color:var(--ink);font-family:var(--body);overflow:hidden}
+  .viewport{position:fixed;inset:0;overflow:hidden}
+  .stage{position:absolute;left:50%;top:50%;width:1600px;height:900px;transform-origin:center center;transform:translate(-50%,-50%)}
+  .slide{position:absolute;inset:0;background:var(--paper);padding:72px 96px 64px;box-sizing:border-box;display:none;flex-direction:column;overflow:hidden}
+  .slide.active{display:flex}
+  .slide.dark{background:var(--navy);color:var(--paper)}
+
+  .eyebrow{font-family:var(--mono);font-size:18px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin:0 0 20px}
+  .dark .eyebrow{color:var(--teal-hi)}
+  h1,h2,h3{font-family:var(--display);font-stretch:112%;margin:0;text-wrap:balance;letter-spacing:-.01em}
+  h2{font-size:58px;line-height:1.05;font-weight:800;max-width:1280px}
+  h3{font-size:27px;line-height:1.15;font-weight:700}
+  p{margin:0}
+  .lead{font-size:25px;line-height:1.45;color:var(--slate);max-width:1000px;margin-top:18px}
+  .dark .lead{color:var(--mist)}
+  .small{font-size:18px;line-height:1.5;color:var(--slate)}
+  .dark .small{color:var(--mist)}
+  .src{position:absolute;left:96px;bottom:26px;font-family:var(--mono);font-size:13px;color:var(--slate);letter-spacing:.02em}
+  .dark .src{color:#7F93A8}
+  .pageno{position:absolute;right:96px;bottom:26px;font-family:var(--mono);font-size:13px;color:var(--slate)}
+  .dark .pageno{color:#7F93A8}
+  .col{display:flex;flex-direction:column;gap:20px}
+
+  .dot{display:inline-block;width:.62em;height:.62em;border-radius:50%;vertical-align:.05em;margin-right:.45em;flex:none}
+  .d-white{background:var(--card);box-shadow:inset 0 0 0 2px var(--grey-dot)}
+  .d-amber{background:var(--amber)}
+  .d-orange{background:var(--orange)}
+  .d-red{background:var(--rose)}
+  .d-black{background:var(--navy)}
+  .d-teal{background:var(--teal)}
+
+  .list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:13px}
+  .list li{font-size:18px;line-height:1.45;color:var(--slate);padding-left:22px;position:relative}
+  .list li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:2px;background:var(--teal)}
+  .list li b{color:var(--ink);font-weight:600}
+  .dark .list li{color:var(--mist)}
+  .dark .list li b{color:var(--paper)}
+  .panel{background:var(--card);border-radius:14px;padding:26px 30px}
+  .panel h3{font-size:23px;margin-bottom:14px}
+
+  /* 1 cover */
+  .slide.cover{padding:0;background:var(--navy) url("img/cover.jpg") center/cover no-repeat}
+  .cover .inner{position:absolute;left:96px;top:0;bottom:0;width:690px;display:flex;flex-direction:column;justify-content:center}
+  .wordmark{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:170px;line-height:.88;color:var(--paper);letter-spacing:-.035em}
+  .wordmark i{font-style:normal;color:var(--teal-hi)}
+  .tagline{font-family:var(--display);font-stretch:112%;font-weight:700;font-size:42px;line-height:1.15;color:var(--paper);margin-top:30px}
+  .tagline-en{font-family:var(--mono);font-size:19px;color:var(--rose);margin-top:12px;letter-spacing:.02em}
+  .cover .sub{font-size:22px;line-height:1.5;color:var(--mist);margin-top:22px;max-width:580px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:36px}
+  .chip{font-family:var(--mono);font-size:15px;padding:8px 14px;border-radius:999px;border:1px solid #3A4E66;color:#CFDAE4}
+  .cover .event{position:absolute;left:96px;top:56px;font-family:var(--mono);font-size:16px;letter-spacing:.12em;text-transform:uppercase;color:#8FA3B8}
+
+  /* 2 problem */
+  .problem{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;height:100%}
+  .bigstat{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:138px;line-height:.9;color:var(--rose);letter-spacing:-.04em;white-space:nowrap}
+  .bigstat small{display:block;white-space:normal;font-size:36px;font-stretch:112%;color:var(--paper);letter-spacing:-.01em;margin-top:26px;line-height:1.18}
+  .bigstat small span{display:block;font-family:var(--body);font-size:19px;font-weight:400;color:var(--mist);margin-top:14px;line-height:1.5}
+  .statlist{display:flex;flex-direction:column}
+  .stat{display:grid;grid-template-columns:230px 1fr;gap:24px;align-items:baseline;padding:21px 0;border-top:1px solid var(--navy-line)}
+  .stat:last-child{border-bottom:1px solid var(--navy-line)}
+  .stat .n{white-space:nowrap;font-family:var(--display);font-stretch:112%;font-weight:800;font-size:38px;color:var(--paper);font-variant-numeric:tabular-nums}
+  .stat .t{font-size:19px;line-height:1.4;color:var(--mist)}
+
+  /* 3 story */
+  .slide.story{padding:0;background:var(--navy)}
+  .story img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .story .shade{position:absolute;left:0;right:0;bottom:0;height:330px;background:linear-gradient(to top,rgba(14,26,43,.96) 0%,rgba(14,26,43,.82) 55%,rgba(14,26,43,0) 100%)}
+  .story .txt{position:absolute;left:96px;right:96px;bottom:56px;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px;align-items:end;color:var(--paper)}
+  .story h2{font-size:48px;color:var(--paper)}
+  .story .beat{border-top:2px solid var(--rose);padding-top:12px;font-size:18px;line-height:1.45;color:#D5DFE8}
+  .story .beat.t{border-top-color:var(--teal-hi)}
+  .story .beat b{display:block;font-family:var(--display);font-stretch:112%;font-size:21px;color:var(--paper);margin-bottom:4px}
+
+  /* 4 insight */
+  .insight{display:grid;grid-template-columns:1.25fr 1fr;gap:56px;margin-top:30px;flex:1;min-height:0}
+  .tbl{width:100%;border-collapse:collapse;font-size:18px}
+  .tbl th{text-align:left;font-family:var(--mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);font-weight:600;padding:0 0 10px;border-bottom:2px solid var(--ink)}
+  .tbl td{padding:13px 16px 13px 0;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.4;color:var(--slate)}
+  .tbl td:first-child{font-weight:600;color:var(--ink);white-space:nowrap}
+  .gapcol{display:flex;flex-direction:column;gap:22px}
+  .gapcol .g{border-top:4px solid var(--ink);padding-top:14px}
+  .gapcol .g h3{font-size:24px;margin-bottom:6px}
+
+  /* 5 solution */
+  .solution{display:grid;grid-template-columns:1fr 540px;gap:60px;margin-top:30px;flex:1;min-height:0}
+  .check{display:grid;grid-template-columns:64px 1fr;gap:20px;padding:20px 0;border-top:1px solid var(--line)}
+  .check:last-of-type{border-bottom:1px solid var(--line)}
+  .check .ic{width:52px;height:52px;border-radius:14px;background:var(--teal-soft);display:grid;place-items:center}
+  .check .ic svg{width:28px;height:28px}
+  .check h3{font-size:25px;margin-bottom:6px}
+  .check p{font-size:18px;line-height:1.5;color:var(--slate)}
+  .phone{background:#DCE5EC;border-radius:28px;padding:22px;display:flex;flex-direction:column;gap:12px;font-size:16.5px;line-height:1.45}
+  .phone .hdr{display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .avatar{width:42px;height:42px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:18px}
+  .bubble{background:#fff;border-radius:16px;padding:12px 16px;max-width:90%}
+  .bubble.me{align-self:flex-end;background:#CDEBDF}
+  .bubble .thumb{width:100%;height:84px;border-radius:10px;background:url("img/samephoto.jpg") 4% 34%/420% auto no-repeat;margin-bottom:8px}
+  .result .rt{font-weight:700;margin-bottom:6px}
+  .result .ln{display:flex;gap:2px;align-items:baseline;margin:4px 0}
+  .result .adv{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-weight:600}
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .btns span{font-size:14px;font-weight:600;border:1px solid var(--line);border-radius:8px;padding:6px 10px;color:var(--teal);background:#F7FAFB}
+
+  /* 6 same photo */
+  .slide.samephoto{padding:0;background:var(--navy) url("img/samephoto.jpg") center 42%/cover no-repeat}
+  .samephoto .top{position:absolute;left:96px;top:48px;right:96px}
+  .samephoto h2{color:var(--paper);font-size:50px;max-width:none;white-space:nowrap}
+  .samephoto .bottom{position:absolute;left:96px;right:96px;bottom:62px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px}
+  .samephoto .bottom div{border-top:2px solid var(--teal-hi);padding-top:12px;font-size:18px;line-height:1.45;color:#D5DFE8}
+  .samephoto .bottom b{display:block;color:var(--paper);font-family:var(--display);font-stretch:112%;font-size:22px;margin-bottom:4px}
+
+  /* 7 graph + 8 money */
+  .graphwrap{display:grid;grid-template-columns:1fr 440px;gap:44px;margin-top:22px;flex:1;min-height:0;align-items:center}
+  .graphwrap svg{width:100%;height:auto;display:block}
+  .callout{background:var(--card);border-radius:14px;padding:24px 28px;border-left:6px solid var(--amber)}
+  .callout.rose{border-left-color:var(--rose)}
+  .callout.teal{border-left-color:var(--teal)}
+  .callout .t{font-family:var(--mono);font-size:14px;color:var(--slate);text-transform:uppercase;letter-spacing:.08em}
+  .callout p{font-size:20px;line-height:1.5;margin-top:10px}
+  .notes{margin-top:20px;display:flex;flex-direction:column;gap:10px;font-size:17px;color:var(--slate);line-height:1.45}
+  .notes b{color:var(--ink);font-weight:600}
+  .dark .callout{background:var(--navy-2)}
+  .dark .callout p{color:var(--paper)}
+  .dark .notes{color:var(--mist)}
+  .dark .notes b{color:var(--paper)}
+
+  /* 9 bukti asli */
+  .bukti{display:grid;grid-template-columns:520px 1fr;gap:64px;margin-top:30px;flex:1;min-height:0;align-items:start}
+  .bcard{background:var(--navy);color:var(--paper);border-radius:22px;padding:30px 32px;display:flex;flex-direction:column;gap:18px;box-shadow:0 30px 60px -30px rgba(14,26,43,.55)}
+  .bcard .top{display:flex;justify-content:space-between;align-items:center}
+  .bcard .brand{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:24px}
+  .bcard .brand i{font-style:normal;color:var(--teal-hi)}
+  .bcard .seal{font-family:var(--mono);font-size:13px;color:var(--teal-hi);border:1px solid var(--teal);border-radius:999px;padding:5px 12px}
+  .bcard .who{display:flex;gap:16px;align-items:center}
+  .bcard .pic{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#2E4A66,#1C3047);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:26px;color:var(--paper)}
+  .bcard .name{font-family:var(--display);font-stretch:112%;font-weight:700;font-size:28px}
+  .bcard .addr{font-family:var(--mono);font-size:14px;color:#8FA3B8}
+  .bcard .rows{display:flex;flex-direction:column;border-top:1px solid var(--navy-line)}
+  .bcard .rows div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--navy-line);font-size:17px}
+  .bcard .rows span{color:var(--mist)}
+  .bcard .rows b{color:var(--teal-hi);font-weight:600;text-align:right}
+  .bcard .foot{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:13px;color:#8FA3B8}
+  .qr{width:66px;height:66px;background:
+      linear-gradient(90deg,var(--paper) 50%,transparent 0) 0 0/12px 12px,
+      linear-gradient(var(--paper) 50%,transparent 0) 0 0/12px 12px;opacity:.85;border-radius:6px;background-color:var(--navy-2)}
+  .bukti .why{display:flex;flex-direction:column;gap:18px}
+  .bukti .why .k{font-family:var(--display);font-stretch:112%;font-weight:800;font-size:34px;line-height:1.15;color:var(--rose-deep)}
+
+  /* 10 trust */
+  .twocol{display:grid;grid-template-columns:1.1fr 1fr;gap:52px;flex:1;min-height:0;margin-top:26px}
+  .ladder{display:flex;flex-direction:column;gap:10px}
+  .rung{display:grid;grid-template-columns:260px 1fr;gap:24px;align-items:center;background:var(--card);border-radius:12px;padding:15px 24px}
+  .rung .s{font-family:var(--display);font-stretch:112%;font-weight:700;font-size:23px;display:flex;align-items:center}
+  .rung p{font-size:17px;color:var(--slate);line-height:1.4}
+  .rung.muted{background:transparent;box-shadow:inset 0 0 0 1px var(--line)}
+
+  /* 11 why chain */
+  .versus{display:grid;grid-template-columns:1fr 1fr;margin-top:30px;border-radius:14px;overflow:hidden}
+  .versus div{padding:24px 32px;font-family:var(--display);font-stretch:112%;font-weight:700;font-size:29px;line-height:1.2}
+  .versus .db{background:var(--paper-2);color:var(--slate)}
+  .versus .bc{background:var(--teal);color:#fff}
+  .versus small{display:block;font-family:var(--mono);font-size:14px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;opacity:.85}
+  .benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:30px}
+  .benefit h3{font-size:22px;margin-bottom:8px}
+  .benefit p{font-size:17px;line-height:1.45;color:var(--slate)}
+  .limits{margin-top:30px;background:var(--card);border-radius:14px;padding:22px 30px;display:grid;grid-template-columns:190px repeat(3,1fr);gap:28px;align-items:start}
+  .limits .t{font-family:var(--mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--rose-deep)}
+  .limits p{font-size:16.5px;line-height:1.45;color:var(--slate)}
+  .limits p b{color:var(--ink);display:block;margin-bottom:4px}
+
+  /* 12 architecture */
+  .arch{display:grid;grid-template-columns:260px 50px 1fr 50px 380px;align-items:stretch;margin-top:30px}
+  .lane{display:flex;flex-direction:column;gap:12px}
+  .lane .lbl,.tagline-sm{font-family:var(--mono);font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--slate)}
+  .node{background:var(--card);border-radius:12px;padding:13px 18px;font-size:17px;line-height:1.35}
+  .node b{display:block;font-weight:700}
+  .node span{font-size:14.5px;color:var(--slate)}
+  .node.dim{background:transparent;border:1px dashed var(--line);color:var(--slate)}
+  .arrow{display:grid;place-items:center;color:var(--slate);font-size:28px}
+  .brain{background:var(--navy);color:var(--paper);border-radius:16px;padding:24px 26px;display:flex;flex-direction:column;gap:12px}
+  .brain h3{font-size:26px}
+  .brain .tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .brain .tools span{font-family:var(--mono);font-size:13.5px;background:var(--navy-2);border:1px solid var(--navy-line);border-radius:8px;padding:8px 10px;color:#CFDAE4}
+  .chain{background:var(--teal-soft);border-radius:16px;padding:22px 24px;display:flex;flex-direction:column;gap:10px}
+  .chain h3{font-size:23px;color:var(--teal-deep)}
+  .chain .node{background:#fff}
+  .gasnote{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:28px}
+  .gasnote div{border-top:3px solid var(--teal);padding-top:12px;font-size:17px;line-height:1.45;color:var(--slate)}
+  .gasnote b{color:var(--ink);display:block;font-size:20px;margin-bottom:4px}
+
+  /* 13 community */
+  .community{display:grid;grid-template-columns:620px 1fr;gap:56px;margin-top:28px;flex:1;min-height:0}
+  .room{background:var(--card);border-radius:16px;padding:24px 28px;display:flex;flex-direction:column;gap:14px}
+  .room .rt{font-family:var(--mono);font-size:13.5px;color:var(--slate);letter-spacing:.08em;text-transform:uppercase}
+  .room h3{font-size:26px}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .kpis div{background:var(--paper);border-radius:10px;padding:12px 14px}
+  .kpis b{display:block;font-family:var(--display);font-stretch:112%;font-size:29px;font-variant-numeric:tabular-nums}
+  .kpis span{font-size:14px;color:var(--slate)}
+  .timeline{font-size:16px;line-height:1.6;color:var(--slate);border-left:2px solid var(--line);padding-left:16px}
+  .timeline b{color:var(--ink);font-family:var(--mono);font-weight:600;margin-right:8px}
+  .warn{background:var(--rose-soft);color:var(--rose-deep);border-radius:10px;padding:12px 16px;font-size:15.5px;line-height:1.45;font-weight:600}
+  .impact{background:var(--navy);color:var(--paper);border-radius:14px;padding:22px 26px;font-size:20px;line-height:1.45}
+  .impact .k{font-family:var(--mono);font-size:14px;color:var(--teal-hi);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+
+  /* 14 business */
+  .biz{display:grid;grid-template-columns:1fr 470px;gap:52px;margin-top:26px;flex:1;min-height:0}
+  .rev{display:flex;flex-direction:column}
+  .rev .r{display:grid;grid-template-columns:320px 1fr;gap:20px;padding:15px 0;border-top:1px solid var(--line);align-items:baseline}
+  .rev .r:last-child{border-bottom:1px solid var(--line)}
+  .rev .r b{font-size:20px;font-weight:700}
+  .rev .r span{font-size:16.5px;color:var(--slate);line-height:1.4}
+  .rev .r .free{color:var(--teal);font-weight:700}
+  .metric{background:var(--navy);color:var(--paper);border-radius:14px;padding:24px 28px}
+  .metric .k{font-family:var(--mono);font-size:14px;color:var(--teal-hi);letter-spacing:.08em;text-transform:uppercase}
+  .metric .v{font-family:var(--display);font-stretch:112%;font-weight:800;font-size:30px;line-height:1.2;margin:10px 0 8px}
+  .metric p{font-size:17px;line-height:1.45;color:var(--mist)}
+  .expand{display:flex;align-items:center;gap:10px;margin-top:4px;font-family:var(--display);font-stretch:112%;font-weight:700;font-size:20px}
+  .expand span{background:var(--card);border-radius:999px;padding:8px 16px}
+  .expand span.on{background:var(--teal);color:#fff}
+  .expand i{font-style:normal;color:var(--slate)}
+
+  /* 15 diff */
+  .cmp{width:100%;border-collapse:collapse;margin-top:32px;font-size:18px}
+  .cmp th{text-align:left;font-family:var(--mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);font-weight:600;padding:0 20px 12px 0;border-bottom:2px solid var(--ink)}
+  .cmp td{padding:17px 20px 17px 0;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;color:var(--slate)}
+  .cmp td:first-child{color:var(--ink);font-weight:700;width:300px}
+  .cmp td:last-child{color:var(--ink);font-weight:600}
+
+  /* 16 roadmap */
+  .road{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:32px}
+  .phase{border-top:5px solid var(--teal);padding-top:16px}
+  .phase.later{border-top-color:var(--line)}
+  .phase .k{font-family:var(--mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate)}
+  .phase h3{margin:8px 0 12px;font-size:25px}
+  .demo{margin-top:30px;background:var(--card);border-radius:14px;padding:22px 28px;display:grid;grid-template-columns:170px 1fr;gap:28px;align-items:center}
+  .demo .t{font-family:var(--mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}
+  .demo ol{margin:0;padding-left:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px 28px;font-size:16.5px;color:var(--slate);line-height:1.4}
+  .demo ol b{color:var(--ink)}
+
+  /* 17 team */
+  .team{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:40px}
+  .member{background:var(--card);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:10px}
+  .member .ph{width:88px;height:88px;border-radius:50%;background:var(--paper-2);border:2px dashed var(--line)}
+  .member h3{font-size:22px}
+  .member p{font-size:16px;line-height:1.45;color:var(--slate)}
+  .fillme{font-family:var(--mono);font-size:13px;color:var(--rose-deep);background:var(--rose-soft);border-radius:6px;padding:3px 8px;align-self:flex-start}
+
+  /* 18 close */
+  .close{justify-content:center}
+  .close .wordmark{font-size:128px}
+  .close .tagline{font-size:46px}
+  .asks{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:60px;max-width:1300px}
+  .asks div{border-top:2px solid #3A4E66;padding-top:16px;font-size:19px;line-height:1.45;color:var(--mist)}
+  .asks b{display:block;color:var(--paper);font-family:var(--display);font-stretch:112%;font-size:23px;margin-bottom:6px}
+
+  .nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:center;background:rgba(14,26,43,.86);border:1px solid var(--navy-line);border-radius:999px;padding:6px 8px;z-index:10}
+  .nav button{appearance:none;border:0;background:transparent;color:#CFDAE4;font:600 15px var(--body);width:38px;height:34px;border-radius:999px;cursor:pointer}
+  .nav button:hover{background:#22364F}
+  .nav button:focus-visible{outline:2px solid var(--teal-hi);outline-offset:2px}
+  .nav .count{font-family:var(--mono);font-size:13px;color:#8FA3B8;min-width:64px;text-align:center}
+  @media (prefers-reduced-motion:no-preference){
+    .slide.active{animation:in .35s ease-out}
+    @keyframes in{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+  }
+  /* focused-version additions */
+  .reasons{display:grid;grid-template-columns:1.3fr 1fr;gap:52px;margin-top:28px;flex:1;min-height:0}
+  .law{background:var(--navy);color:var(--paper);border-radius:16px;padding:28px 30px;display:flex;flex-direction:column;gap:14px}
+  .law .k{font-family:var(--mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-hi)}
+  .law h3{font-size:26px}
+  .law p{font-size:17.5px;line-height:1.5;color:var(--mist)}
+  .law p b{color:var(--paper)}
+  .law .q{border-left:3px solid var(--teal-hi);padding-left:14px;font-size:17px;line-height:1.5;color:#D5DFE8;font-style:italic}
+  .steps{display:grid;grid-template-columns:repeat(2,1fr);gap:28px 28px;align-content:start}
+  .step{padding:16px 0 0;border-top:3px solid var(--teal)}
+  .step h3{font-size:22px;margin-bottom:6px}
+  .step p{font-size:16.5px;line-height:1.45;color:var(--slate)}
+  .match{width:100%;border-collapse:collapse;margin-top:22px;font-size:16.5px}
+  .match th{text-align:left;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);font-weight:600;padding:0 14px 10px 0;border-bottom:2px solid var(--ink)}
+  .match td{padding:10px 14px 10px 0;border-bottom:1px solid var(--line);vertical-align:middle;line-height:1.35}
+  .match td.d{font-family:var(--mono);font-size:14px;color:var(--slate);white-space:nowrap}
+  .match td.q{color:var(--rose-deep);font-style:italic}
+  .match td.a{color:var(--slate);font-size:18px;text-align:center;width:30px}
+  .match td.t{font-weight:600;white-space:nowrap}
+  .match td.t span{display:block;font-weight:400;font-size:13.5px;color:var(--slate);font-family:var(--mono)}
+  .match td.v{text-align:right;font-family:var(--mono);font-size:15px;color:var(--teal);white-space:nowrap}
+  .match tfoot td{border-bottom:0;padding-top:14px;font-weight:700;font-size:19px}
+  .chipc{display:inline-block;font-family:var(--mono);font-size:12.5px;padding:3px 8px;border-radius:6px;background:var(--amber-soft);color:#8A5A12}
+  .chipc.c{background:var(--teal-soft);color:var(--teal-deep)}
+  .integrity{display:grid;grid-template-columns:1fr 480px;gap:52px;margin-top:28px;flex:1;min-height:0}
+  .flow{display:flex;flex-direction:column;gap:12px}
+  .fstep{display:grid;grid-template-columns:46px 1fr;gap:18px;align-items:start;background:var(--card);border-radius:12px;padding:16px 20px}
+  .fstep .n{width:40px;height:40px;border-radius:50%;background:var(--navy);color:var(--paper);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:18px}
+  .fstep h3{font-size:21px;margin-bottom:4px}
+  .fstep p{font-size:16px;line-height:1.45;color:var(--slate)}
+  .fstep code{font-family:var(--mono);font-size:13.5px;color:var(--teal-deep);background:var(--teal-soft);padding:1px 6px;border-radius:4px}
+  .verify{background:var(--navy);color:var(--paper);border-radius:18px;padding:26px 28px;display:flex;flex-direction:column;gap:14px}
+  .verify .k{font-family:var(--mono);font-size:13.5px;letter-spacing:.08em;text-transform:uppercase;color:#8FA3B8}
+  .verify .file{display:flex;justify-content:space-between;align-items:center;background:var(--navy-2);border:1px solid var(--navy-line);border-radius:10px;padding:12px 14px;font-size:16px}
+  .verify .file span{font-family:var(--mono);font-size:13px;color:#8FA3B8}
+  .verify .hashline{font-family:var(--mono);font-size:13px;color:#9FE3D2;word-break:break-all;line-height:1.5}
+  .verify .ok{background:rgba(15,139,116,.18);border:1px solid var(--teal);border-radius:12px;padding:16px 18px}
+  .verify .ok b{display:block;font-family:var(--display);font-stretch:112%;font-size:24px;color:var(--teal-hi)}
+  .verify .ok p{font-size:16px;color:#D5DFE8;margin-top:4px;line-height:1.45}
+  .verify .usdt{border-top:1px solid var(--navy-line);padding-top:14px;font-size:16px;line-height:1.5;color:var(--mist)}
+  .verify .usdt b{color:var(--paper)}
+  .wheel{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:34px}
+  .wstep{background:var(--card);border-radius:16px;padding:24px 24px 26px;display:flex;flex-direction:column;gap:10px;position:relative}
+  .wstep.on{background:var(--navy);color:var(--paper)}
+  .wstep .n{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:44px;color:var(--teal)}
+  .wstep.on .n{color:var(--teal-hi)}
+  .wstep h3{font-size:25px}
+  .wstep p{font-size:16.5px;line-height:1.45;color:var(--slate)}
+  .wstep.on p{color:var(--mist)}
+  .wstep .tag{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;align-self:flex-start;padding:4px 9px;border-radius:6px;background:var(--teal-soft);color:var(--teal-deep)}
+  .wstep.on .tag{background:var(--teal);color:#fff}
+  .wstep .tag.later{background:var(--paper-2);color:var(--slate)}
+  .wstep .img{height:96px;border-radius:10px;background:url("img/samephoto.jpg") center 45%/cover no-repeat}
+  .coldstart{margin-top:28px;display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:center;background:var(--amber-soft);border-radius:14px;padding:20px 28px}
+  .coldstart .t{font-family:var(--mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:#8A5A12}
+  .coldstart p{font-size:18px;line-height:1.5;color:var(--ink)}
+  /* winner-deck additions */
+  .big3{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:40px}
+  .big3 .it{border-top:4px solid var(--rose);padding-top:18px}
+  .big3 .it .n{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:64px;line-height:1;color:var(--rose-deep)}
+  .big3 .it h3{font-size:26px;margin:12px 0 8px}
+  .big3 .it p{font-size:18px;line-height:1.5;color:var(--slate)}
+  .lawbar{margin-top:40px;background:var(--navy);color:var(--paper);border-radius:14px;padding:22px 30px;display:grid;grid-template-columns:200px 1fr;gap:28px;align-items:center}
+  .lawbar .k{font-family:var(--mono);font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-hi)}
+  .lawbar p{font-size:19px;line-height:1.5;color:#D5DFE8}
+  .lawbar b{color:var(--paper)}
+  .matrix{width:100%;border-collapse:collapse;margin-top:30px;font-size:17px}
+  .matrix th{font-family:var(--mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);font-weight:600;padding:0 12px 12px;border-bottom:2px solid var(--ink);text-align:center;vertical-align:bottom;line-height:1.35}
+  .matrix th:first-child{text-align:left;padding-left:0}
+  .matrix td{padding:14px 12px;border-bottom:1px solid var(--line);text-align:center;color:var(--slate)}
+  .matrix td:first-child{text-align:left;padding-left:0;color:var(--ink);font-weight:700}
+  .matrix td:first-child span{display:block;font-weight:400;font-size:14px;color:var(--slate)}
+  .matrix .y{color:var(--teal);font-weight:800;font-size:20px}
+  .matrix .p{color:var(--amber);font-weight:800;font-size:20px}
+  .matrix .n{color:var(--grey-dot);font-size:20px}
+  .matrix tr.us td{background:var(--teal-soft)}
+  .matrix tr.us td:first-child{color:var(--teal-deep)}
+  .punch{margin-top:26px;font-family:var(--display);font-stretch:112%;font-weight:800;font-size:30px;line-height:1.2;color:var(--ink)}
+  .punch em{font-style:normal;color:var(--teal)}
+  .bizgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:30px}
+  .payer{background:var(--card);border-radius:16px;padding:24px 26px;display:flex;flex-direction:column;gap:10px}
+  .payer .k{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}
+  .payer h3{font-size:25px}
+  .payer p{font-size:16.5px;line-height:1.45;color:var(--slate)}
+  .payer .price{margin-top:auto;padding-top:12px;border-top:1px solid var(--line);font-family:var(--display);font-stretch:112%;font-weight:800;font-size:24px;color:var(--ink)}
+  .payer .price span{display:block;font-family:var(--body);font-weight:400;font-size:14px;color:var(--slate)}
+  .flowline{margin-top:26px;display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:18px;align-items:center}
+  .flowline .b{background:var(--navy);color:var(--paper);border-radius:12px;padding:16px 20px;font-size:17px;line-height:1.4}
+  .flowline .b b{display:block;font-family:var(--display);font-stretch:112%;font-size:20px;color:var(--teal-hi);margin-bottom:2px}
+  .flowline i{font-style:normal;font-size:26px;color:var(--slate)}
+  .econ{display:flex;gap:16px;margin-top:18px;flex-wrap:wrap}
+  .econ div{background:var(--paper-2);border-radius:10px;padding:10px 16px;font-size:16px;color:var(--slate)}
+  .econ b{color:var(--ink)}
+  .tracks{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+  .tracks span{font-family:var(--display);font-stretch:112%;font-weight:700;font-size:19px;padding:10px 18px;border-radius:999px;background:var(--navy);color:var(--paper)}
+  .tracks span.sec{background:var(--teal)}
+  /* final-version additions */
+  .seq{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-top:34px}
+  .seq .s{background:var(--card);border-radius:14px;padding:20px 20px 22px;display:flex;flex-direction:column;gap:8px;position:relative}
+  .seq .s .n{font-family:var(--display);font-stretch:125%;font-weight:800;font-size:40px;line-height:1;color:var(--rose-deep)}
+  .seq .s h3{font-size:20px;line-height:1.2}
+  .seq .s p{font-size:15.5px;line-height:1.45;color:var(--slate)}
+  .seq .s.hot{background:var(--navy);color:var(--paper)}
+  .seq .s.hot p{color:var(--mist)}
+  .seq .s.hot .n{color:var(--rose)}
+  .callbar{background:var(--rose-soft);border:1px solid #F3B4BD;border-radius:12px;padding:12px 14px;font-size:15.5px;line-height:1.45;color:var(--rose-deep)}
+  .callbar b{display:block;font-size:16.5px;color:var(--rose-deep)}
+  .timerline{display:flex;align-items:center;gap:18px;margin-top:22px}
+  .timer{font-family:var(--mono);font-weight:600;font-size:40px;color:var(--paper);background:var(--navy);border-radius:12px;padding:8px 18px;border:2px solid var(--rose)}
+  .timerline p{font-size:17px;color:var(--slate);line-height:1.45;max-width:760px}
+  .drafts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:22px}
+  .draft{background:var(--card);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;border-top:5px solid var(--teal)}
+  .draft .k{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}
+  .draft h3{font-size:22px}
+  .draft .f{display:flex;justify-content:space-between;gap:12px;font-size:15px;border-bottom:1px dashed var(--line);padding:5px 0}
+  .draft .f span{color:var(--slate)}
+  .draft .f b{font-weight:600;text-align:right}
+  .draft .f.warn b{color:#B26E12}
+  .draft .chron{font-size:14.5px;line-height:1.45;color:var(--slate);background:var(--paper);border-radius:8px;padding:9px 11px}
+  .vpair{display:flex;flex-direction:column;gap:14px}
+  .vbox{border-radius:16px;padding:20px 22px;display:flex;flex-direction:column;gap:8px;background:var(--navy);color:var(--paper)}
+  .vbox .k{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#8FA3B8}
+  .vbox .file{display:flex;justify-content:space-between;font-size:15.5px}
+  .vbox .file span{font-family:var(--mono);font-size:12.5px;color:#8FA3B8}
+  .vbox .hashline{font-family:var(--mono);font-size:12.5px;color:#9FE3D2;word-break:break-all}
+  .vbox .res{border-radius:10px;padding:12px 14px}
+  .vbox .res b{display:block;font-family:var(--display);font-stretch:112%;font-size:22px}
+  .vbox .res p{font-size:14.5px;line-height:1.45;margin-top:2px;color:#D5DFE8}
+  .vbox .res.ok{background:rgba(15,139,116,.18);border:1px solid var(--teal)}
+  .vbox .res.ok b{color:var(--teal-hi)}
+  .vbox .res.bad{background:rgba(232,88,107,.16);border:1px solid var(--rose)}
+  .vbox .res.bad b{color:#FF9AA7}
+  .proof{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:28px}
+  .proof .col{background:var(--card);border-radius:14px;padding:22px 26px}
+  .proof .col h3{font-size:22px;margin-bottom:12px}
+  .proof .col.yes{border-top:5px solid var(--teal)}
+  .proof .col.no{border-top:5px solid var(--rose)}
+  .expath{display:flex;align-items:center;gap:8px;margin-top:22px;flex-wrap:wrap}
+  .expath span{font-family:var(--display);font-stretch:112%;font-weight:700;font-size:16.5px;background:var(--card);border-radius:999px;padding:8px 14px}
+  .expath span.on{background:var(--teal);color:#fff}
+  .expath span.story{background:var(--rose-soft);color:var(--rose-deep)}
+  .expath i{font-style:normal;color:var(--slate)}
+</style>
+
+<div class="viewport">
+<div class="stage" id="stage">
+
+<!-- 1 Cover -->
+<section class="slide cover dark" aria-label="Cover">
+  <div class="event">Indonesia Web3 Hackathon 2026</div>
+  <div class="inner">
+    <div class="wordmark">Tap<i>ak</i></div>
+    <div class="tagline">Cintanya palsu.<br>Buktinya tetap utuh.</div>
+    <div class="tagline-en">Broken promises. Unbroken evidence.</div>
+    <p class="sub">Copilot respons awal untuk korban penipuan transfer: data untuk jalur fraud, draf laporan per rekening tujuan, dan berkas bukti yang integritasnya bisa diperiksa di BNB Chain.</p>
+    <div class="chips">
+      <span class="chip">Track · Finance &amp; Commerce</span>
+      <span class="chip">Track · AI Agents</span>
+      <span class="chip">BNB Chain</span>
+    </div>
+  </div>
+</section>
+
+<!-- 2 Problem -->
+<section class="slide dark" aria-label="Masalah">
+  <div class="problem">
+    <div>
+      <p class="eyebrow">Masalah</p>
+      <div class="bigstat">Rp120 M<small>hilang dari satu korban love scam dalam empat bulan.<span>Seorang akuntan publik di Medan. Kasus terbesar yang pernah ditangani Satgas PASTI.</span></small></div>
+    </div>
+    <div class="statlist">
+      <div class="stat"><div class="n">Rp724 M</div><div class="t">dana korban diblokir IASC dan ±607 ribu rekening dibekukan (s.d. 31 Jul 2026). Baru Rp204 M yang kembali</div></div>
+      <div class="stat"><div class="n">Rp1,78 T</div><div class="t">kerugian dari modus nomor 1 di IASC: jual beli online (113.520 laporan)</div></div>
+      <div class="stat"><div class="n">Rp41 M</div><div class="t">dalam 10 bulan dari satu jaringan pig butchering di Sukoharjo</div></div>
+      <div class="stat"><div class="n">US$17 M</div><div class="t">miliar kerugian scam kripto global 2025, terus bergeser ke modus romansa dan USDT</div></div>
+    </div>
+  </div>
+  <p class="src">Liputan6 (Jul 2026) · OJK via periskop.id (Sep 2026) · IASC/Katadata · DPR RI · Chainalysis 2026</p>
+  <p class="pageno">02</p>
+</section>
+
+<!-- 3 Story -->
+<section class="slide story" aria-label="Cerita">
+  <img src="img/story.jpg" alt="Seorang ibu berhijab tersenyum menatap ponselnya di sofa pada malam hari, sementara putrinya berdiri di ambang pintu dengan wajah khawatir.">
+  <div class="shade"></div>
+  <div class="txt">
+    <h2>Transfer terakhir terkirim. Baru saat itu Bu Ratna sadar.</h2>
+    <div class="beat"><b>Empat bulan, tiga rekening</b>"Kapten Daniel" meminta uang tujuh kali: biaya kapal, ibunya sakit, lalu "platform trading". Kini akunnya hilang.</div>
+    <div class="beat t"><b>Dinda harus bergerak cepat</b>Dana bisa dipindahkan pelaku dalam hitungan menit. Tapi datanya tersebar dan ibunya panik.</div>
+  </div>
+</section>
+
+<!-- 4 Insight: first 5 minutes -->
+<section class="slide" aria-label="Lima menit pertama">
+  <p class="eyebrow">Insight · panduan resmi IASC/OJK</p>
+  <h2>Lima menit pertama menentukan. Korban harus mengerjakannya sambil panik.</h2>
+  <div class="seq">
+    <div class="s hot"><div class="n">1</div><h3>Telepon jalur fraud</h3><p>Bank atau e-wallet asal, lalu minta nomor laporan sebelum telepon ditutup.</p></div>
+    <div class="s"><div class="n">2</div><h3>Siapkan 7 data</h3><p>Jam, nominal persis, rekening asal &amp; tujuan, nama penerima, nomor referensi, kronologi singkat.</p></div>
+    <div class="s"><div class="n">3</div><h3>Lapor ke IASC</h3><p>Satu formulir untuk satu rekening tujuan. Tiga rekening berarti tiga laporan.</p></div>
+    <div class="s"><div class="n">4</div><h3>Lampirkan bukti</h3><p>Bukti transfer, chat, akun atau iklan pelaku. Jangan hapus chat walau malu.</p></div>
+    <div class="s"><div class="n">5</div><h3>Laporan polisi</h3><p>IASC tidak menggantikannya. Satu jalur mengejar dana, satu mengejar pelaku.</p></div>
+  </div>
+  <div class="lawbar">
+    <div class="k">Kenyataannya</div>
+    <p>Laporan yang tidak lengkap membuat korban <b>diminta melengkapi bukti</b> dan waktu terbuang. Bukti elektronik sah secara hukum <b>asal keutuhannya terjamin</b> (UU ITE Pasal 5 &amp; 6).</p>
+  </div>
+  <p class="src">IASC/OJK · Kompas · Detik · Hukumonline</p>
+  <p class="pageno">04</p>
+</section>
+
+<!-- 5 Solution -->
+<section class="slide" aria-label="Solusi">
+  <p class="eyebrow">Solusi · Tapak AI</p>
+  <h2>Copilot yang mengerjakan lima menit pertama bersama korban.</h2>
+  <div class="solution">
+    <div class="steps">
+      <div class="step"><h3>Tindakan mendesak dulu</h3><p>Layar pertama selalu: hubungi jalur fraud sekarang, lengkap dengan naskah dan pengingat nomor laporan.</p></div>
+      <div class="step"><h3>Ekstrak 7 data</h3><p>Dari screenshot bukti transfer dan mutasi. Setiap data punya sumber, dan korban mengonfirmasi.</p></div>
+      <div class="step"><h3>Satu draf per rekening</h3><p>Draf laporan IASC per rekening tujuan dan kronologi untuk polisi, siap ditinjau dan disalin.</p></div>
+      <div class="step"><h3>Berkas yang bisa diperiksa</h3><p>Hash setiap bukti dicatat di BNB Chain. Integritasnya bisa dicek tanpa akun Tapak.</p></div>
+    </div>
+    <div class="phone" aria-label="Contoh percakapan di bot Telegram">
+      <div class="hdr"><div class="avatar">T</div><div><b>Tapak AI</b><div class="small" style="font-size:13.5px">copilot respons awal · Telegram</div></div></div>
+      <div class="bubble me">Tolong, ibu saya baru transfer ke penipu 😭<br>📎 bukti-tf-1.jpg · bukti-tf-2.jpg · bukti-tf-3.jpg</div>
+      <div class="bubble"><div class="callbar"><b>Langkah 1 · sekarang juga</b>Telepon call center bank asal (nomor di balik kartu), pilih jalur fraud, lalu minta nomor laporan.</div></div>
+      <div class="bubble result">
+        <div class="rt">Sambil menunggu, saya siapkan:</div>
+        <div class="ln"><span class="dot d-teal"></span><span><b>3 rekening tujuan</b> → 3 draf laporan IASC</span></div>
+        <div class="ln"><span class="dot d-teal"></span><span>7 data terisi · <b>1 perlu konfirmasi</b></span></div>
+        <div class="ln"><span class="dot d-teal"></span><span>Kronologi 1 paragraf siap tempel</span></div>
+        <div class="ln"><span class="dot d-red"></span><span>Awas: yang mengaku bisa mencairkan dana = <b>penipu babak dua</b></span></div>
+      </div>
+    </div>
+  </div>
+  <p class="src">Contoh tampilan · data simulasi</p>
+  <p class="pageno">05</p>
+</section>
+
+<!-- 6 Demo 1: three drafts -->
+<section class="slide" aria-label="Demo tiga draf">
+  <p class="eyebrow">Demo 1 · AI agent</p>
+  <h2>Tiga rekening, tiga draf. Dalam satu menit.</h2>
+  <div class="timerline"><div class="timer">00:52</div><p>Waktu agen menyusun draf dari tiga screenshot bukti transfer. Ini mengukur penyusunan draf, bukan janji dana kembali.</p></div>
+  <div class="drafts">
+    <div class="draft"><div class="k">Draf IASC 1 / 3</div><h3>BCA 111xxx</h3>
+      <div class="f"><span>Penerima</span><b>D. HARTONO</b></div>
+      <div class="f"><span>Nominal</span><b>Rp25.000.000</b></div>
+      <div class="f"><span>Waktu</span><b>12 Agu 2026, 21:14</b></div>
+      <div class="f"><span>No. referensi</span><b>TRF-8A21C…</b></div>
+      <div class="chron">"Korban dijanjikan profit dari platform trading, diminta top up agar dana bisa ditarik…"</div></div>
+    <div class="draft"><div class="k">Draf IASC 2 / 3</div><h3>BRI 222xxx</h3>
+      <div class="f"><span>Penerima</span><b>S. WIJAYA</b></div>
+      <div class="f"><span>Nominal</span><b>Rp8.500.000</b></div>
+      <div class="f"><span>Waktu</span><b>08 Jul 2026, 20:31</b></div>
+      <div class="f warn"><span>No. referensi</span><b>tidak terbaca · konfirmasi</b></div>
+      <div class="chron">"Korban diminta membayar bea cukai atas paket hadiah dari terlapor…"</div></div>
+    <div class="draft"><div class="k">Draf IASC 3 / 3</div><h3>Mandiri 333xxx</h3>
+      <div class="f"><span>Penerima</span><b>R. PRATAMA</b></div>
+      <div class="f"><span>Nominal</span><b>Rp12.000.000</b></div>
+      <div class="f"><span>Waktu</span><b>20 Jun 2026, 07:12</b></div>
+      <div class="f"><span>No. referensi</span><b>TRF-3F90B…</b></div>
+      <div class="chron">"Terlapor mengaku ibunya dirawat di rumah sakit di Manila…"</div></div>
+  </div>
+  <p class="src">Contoh data simulasi · draf siap ditinjau, bukan laporan yang sudah terkirim</p>
+  <p class="pageno">06</p>
+</section>
+
+<!-- 7 Demo 2: matching -->
+<section class="slide" aria-label="Pencocokan permintaan dan transfer">
+  <p class="eyebrow">Demo 2 · AI agent</p>
+  <h2>Agen membaca empat bulan chat dan menemukan bukti yang hilang.</h2>
+  <table class="match">
+    <thead><tr><th>Tanggal</th><th>Permintaan di chat</th><th></th><th>Transfer</th><th style="text-align:right">Nilai</th><th>Bukti</th></tr></thead>
+    <tbody>
+      <tr><td class="d">02 Jun 21:03</td><td class="q">"Kapalku tertahan di pelabuhan, butuh biaya dokumen"</td><td class="a">→</td><td class="t">BCA 111xxx<span>02 Jun 21:40</span></td><td class="v">Rp5.000.000</td><td><span class="chipc c">mutasi</span></td></tr>
+      <tr><td class="d">19 Jun 22:15</td><td class="q">"Ibuku masuk rumah sakit di Manila"</td><td class="a">→</td><td class="t">Mandiri 333xxx<span>20 Jun 07:12</span></td><td class="v">Rp12.000.000</td><td><span class="chipc c">mutasi</span></td></tr>
+      <tr><td class="d">08 Jul 19:50</td><td class="q">"Paket hadiah untukmu kena bea cukai"</td><td class="a">→</td><td class="t">BRI 222xxx<span>08 Jul 20:31</span></td><td class="v">Rp8.500.000</td><td><span class="chipc">minta mutasi BRI</span></td></tr>
+      <tr><td class="d">27 Jul 20:22</td><td class="q">"Coba deposit dulu di platform pamanku"</td><td class="a">→</td><td class="t">USDT 0x7a3f…<span>27 Jul 21:05</span></td><td class="v">1.000 USDT</td><td><span class="chipc c">on-chain</span></td></tr>
+      <tr><td class="d">12 Agu 20:47</td><td class="q">"Top up supaya profitnya bisa ditarik"</td><td class="a">→</td><td class="t">BCA 111xxx<span>12 Agu 21:14</span></td><td class="v">Rp25.000.000</td><td><span class="chipc c">mutasi</span></td></tr>
+      <tr><td class="d">03 Sep 18:30</td><td class="q">"Ada pajak penarikan 10% dulu, sayang"</td><td class="a">→</td><td class="t">USDT 0x7a3f…<span>03 Sep 19:02</span></td><td class="v">1.500 USDT</td><td><span class="chipc c">on-chain</span></td></tr>
+      <tr><td class="d">20 Sep 21:11</td><td class="q">"Terakhir, biaya verifikasi akun"</td><td class="a">→</td><td class="t">USDT 0x19c0…<span>20 Sep 21:48</span></td><td class="v">2.000 USDT</td><td><span class="chipc c">on-chain</span></td></tr>
+    </tbody>
+    <tfoot><tr><td colspan="4">Total kerugian terdokumentasi · transfer USDT ditarik langsung dari BSC</td><td class="v" style="font-size:19px">±Rp124,3 jt</td><td></td></tr></tfoot>
+  </table>
+  <p class="src">Contoh data simulasi · kurs ±Rp16.400/USDT · agen meminta konfirmasi sebelum berkas dicatat</p>
+  <p class="pageno">07</p>
+</section>
+
+<!-- 8 Demo 3: integrity -->
+<section class="slide" aria-label="Integritas bukti">
+  <p class="eyebrow">Demo 3 · BNB Chain</p>
+  <h2>Ubah satu karakter, verifikasi langsung gagal.</h2>
+  <div class="integrity">
+    <div class="flow">
+      <div class="fstep"><div class="n">1</div><div><h3>Hash setiap berkas</h3><p>Sidik jari <code>SHA-256</code> untuk setiap bukti. File asli terenkripsi di tangan korban.</p></div></div>
+      <div class="fstep"><div class="n">2</div><div><h3>Dicatat di EvidenceRegistry</h3><p>Kontrak kami di BNB Chain menyimpan hash dan ID kasus. Relayer membayar gas, jadi korban tidak perlu BNB.</p></div></div>
+      <div class="fstep"><div class="n">3</div><div><h3>Diperiksa tanpa akun Tapak</h3><p>Siapa pun yang menerima berkas bisa menghitung ulang hash di verifier publik dan membandingkannya dengan catatan on-chain.</p></div></div>
+      <div class="fstep"><div class="n">4</div><div><h3>Yang dibuktikan</h3><p>Berkas tidak berubah sejak dicatat. Kebenaran isi chat tetap dinilai penyidik.</p></div></div>
+    </div>
+    <div class="vpair" aria-label="Contoh hasil verifikasi">
+      <div class="vbox"><div class="k">Berkas asli</div><div class="file"><b>mutasi-bca-jun-sep.pdf</b><span>284 KB</span></div><div class="hashline">sha256 · 9f3c2a71e0b4…d18e6a42c5f0</div><div class="res ok"><b>Cocok ✓</b><p>Sama dengan catatan on-chain 29 Sep 2026, 16:02 WIB.</p></div></div>
+      <div class="vbox"><div class="k">Berkas diedit 1 karakter</div><div class="file"><b>mutasi-bca-jun-sep.pdf</b><span>284 KB</span></div><div class="hashline">sha256 · 4b07e9d2a1c8…73fa0e915b2d</div><div class="res bad"><b>Tidak cocok ✗</b><p>Berkas berbeda dari yang dicatat. Jangan dipakai sebagai bukti.</p></div></div>
+    </div>
+  </div>
+  <p class="pageno">08</p>
+</section>
+
+<!-- 9 Architecture -->
+<section class="slide" aria-label="Arsitektur">
+  <p class="eyebrow">Teknologi</p>
+  <h2>Agen yang bertindak sendiri, dari screenshot sampai on-chain.</h2>
+  <div class="arch">
+    <div class="lane">
+      <div class="lbl">Channel</div>
+      <div class="node"><b>Telegram bot</b><span>Tapak AI</span></div>
+      <div class="node"><b>Web + Clerk</b><span>dashboard · draf · verifier</span></div>
+      <div class="node dim"><b>Widget mitra</b><span>roadmap · kanal fraud</span></div>
+    </div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="brain">
+      <div class="tagline-sm" style="color:#7F93A8">Cloudflare Worker + engine di VPS · MiniMax M3 · triase Jev via AI Gateway</div>
+      <h3>Tapak Agent</h3>
+      <div class="tools">
+        <span>extract_transfer_fields()</span><span>split_by_destination()</span>
+        <span>draft_iasc_report()</span><span>draft_police_chronology()</span>
+        <span>match_requests_to_transfers()</span><span>find_missing_evidence()</span>
+        <span>fetch_bsc_transfers()</span><span>hash_and_anchor()</span>
+      </div>
+    </div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="chain">
+      <div class="tagline-sm" style="color:var(--teal-deep)">On-chain</div>
+      <h3>BNB Chain</h3>
+      <div class="node"><b>EvidenceRegistry</b><span>anchor(caseId, sha256) · BSC testnet</span></div>
+      <div class="node"><b>BSC</b><span>transfer USDT korban (read-only)</span></div>
+      <div class="node dim" style="background:transparent"><b>BNB Attestation Service</b><span>roadmap</span></div>
+    </div>
+  </div>
+  <div class="gasnote">
+    <div><b>Agen memutuskan sendiri</b>Data mana yang kurang, dokumen apa yang diminta, dan kapan berkas dicatat, dengan persetujuan korban.</div>
+    <div><b>Tidak mengarang</b>Setiap angka menunjuk ke sumbernya. Data yang tidak terbaca ditandai, bukan ditebak.</div>
+    <div><b>Data pribadi tidak on-chain</b>Hanya hash. Nomor dan rekening pelaku disimpan sebagai HMAC.</div>
+  </div>
+  <p class="pageno">09</p>
+</section>
+
+<!-- 10 Proof & privacy -->
+<section class="slide" aria-label="Batas kemampuan dan privasi">
+  <p class="eyebrow">Jujur soal batas</p>
+  <h2>Apa yang dibuktikan blockchain, dan apa yang tidak.</h2>
+  <div class="proof">
+    <div class="col yes"><h3>Dibuktikan</h3>
+      <ul class="list">
+        <li><b>Integritas berkas:</b> sama persis dengan yang dicatat pada waktu tertentu.</li>
+        <li><b>Catatan permanen:</b> tidak bisa diubah atau dihapus siapa pun, termasuk kami.</li>
+        <li><b>Transfer USDT</b> ke pelaku, langsung dari BSC.</li>
+        <li><b>Identitas yang sama muncul di laporan lain</b> (nomor, rekening, wallet), dicocokkan lewat hash.</li>
+      </ul></div>
+    <div class="col no"><h3>Tidak dibuktikan</h3>
+      <ul class="list">
+        <li><b>Kebenaran isi chat</b> atau waktu percakapan terjadi.</li>
+        <li><b>Identitas pelaku yang sebenarnya.</b> "Muncul di laporan lain" bukan "terverifikasi".</li>
+        <li><b>Penerimaan otomatis</b> sebagai alat bukti di pengadilan.</li>
+        <li><b>Dana pasti kembali.</b> Tapak mempercepat laporan, tidak menjanjikan pemulihan.</li>
+      </ul></div>
+  </div>
+  <div class="lawbar">
+    <div class="k">Privasi</div>
+    <p>Identitas korban, rekening, dan chat <b>tidak pernah</b> masuk blockchain. File terenkripsi dan dikendalikan korban. Konten intim dilarang diunggah.</p>
+  </div>
+  <p class="pageno">10</p>
+</section>
+
+<!-- 11 Business -->
+<section class="slide" aria-label="Model bisnis">
+  <p class="eyebrow">Model bisnis</p>
+  <h2>Korban gratis. Tim fraud membayar untuk laporan yang siap diproses.</h2>
+  <div class="bizgrid">
+    <div class="payer" style="background:var(--navy);color:var(--paper)"><div class="k" style="color:var(--teal-hi)">Pembeli inti</div><h3>Tim fraud &amp; dispute</h3><p style="color:var(--mist)">E-wallet, payment gateway, marketplace, bank, dan exchange lokal. Laporan korban yang masuk ke jalur fraud mereka sudah lengkap: 7 data, per rekening, dengan bukti ber-hash.</p><div class="price" style="color:var(--paper);border-top-color:var(--navy-line)">Pilot → langganan + volume kasus<span style="color:var(--mist)">diukur dari kelengkapan laporan &amp; waktu siap-lapor</span></div></div>
+    <div class="payer"><div class="k">Kanal akuisisi</div><h3>Edukasi #JanganCidro</h3><p>Konten "lima menit pertama" yang dibagikan keluarga, plus program literasi lembaga jasa keuangan (POJK 3/2023).</p><div class="price">Kanal &amp; tambahan<span>bukan dasar permintaan</span></div></div>
+    <div class="payer"><div class="k">Pelengkap</div><h3>Legaltech &amp; asuransi</h3><p>Rujukan konsultasi hukum dengan berkas siap. Paket klaim asuransi siber untuk phishing dan belanja online fiktif.</p><div class="price">Bagi hasil<span>asuransi: tahap ekspansi</span></div></div>
+  </div>
+  <div class="expath"><span class="story">Love scam · cerita</span><i>→</i><span class="on">Penipuan transfer: jual beli fiktif, investasi bodong</span><i>→</i><span>Bukti transfer palsu</span><i>→</i><span>Phishing</span><i>→</i><span>Klaim asuransi</span></div>
+  <div class="econ"><div>Biaya AI per kasus <b>&lt; Rp1.000</b> (MiniMax M3)</div><div><b>Tanpa langganan konsumen · tanpa jual data pribadi</b></div><div>Early adopter: <b>e-wallet, payment gateway, exchange skala menengah</b></div></div>
+  <p class="src">Model &amp; harga adalah hipotesis untuk divalidasi lewat pilot</p>
+  <p class="pageno">11</p>
+</section>
+
+<!-- 12 Competition -->
+<section class="slide" aria-label="Kompetisi">
+  <p class="eyebrow">Posisi</p>
+  <h2>Semua orang memberi tahu korban apa yang harus dilakukan. Tapak mengerjakannya bersama mereka.</h2>
+  <table class="matrix">
+    <thead><tr><th></th><th>Menerima<br>laporan</th><th>Memandu<br>5 menit pertama</th><th>Draf per rekening<br>+ kronologi</th><th>Integritas berkas<br>bisa diperiksa</th></tr></thead>
+    <tbody>
+      <tr><td>Formulir IASC &amp; CS bank<span>kanal resmi</span></td><td class="y">✓</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+      <tr><td>Konten edukasi<span>video, artikel</span></td><td class="n">—</td><td class="p">◐</td><td class="n">—</td><td class="n">—</td></tr>
+      <tr><td>Pengacara<span>Rp4–10 jt+ per kasus</span></td><td class="n">—</td><td class="n">—</td><td class="p">◐</td><td class="n">—</td></tr>
+      <tr><td>GetContact, cekrekening.id<span>cek satu nomor</span></td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+      <tr class="us"><td>Tapak<span>AI agent + BNB Chain</span></td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+    </tbody>
+  </table>
+  <p class="punch">Kami tidak menggantikan IASC atau bank. <em>Kami membuat laporan korban siap diproses mereka.</em></p>
+  <p class="src">✓ ada · ◐ sebagian · — tidak ada</p>
+  <p class="pageno">12</p>
+</section>
+
+<!-- 13 Build & roadmap -->
+<section class="slide" aria-label="Roadmap">
+  <p class="eyebrow">Eksekusi</p>
+  <h2>Yang kami bangun di hackathon, dan langkah berikutnya.</h2>
+  <div class="road">
+    <div class="phase">
+      <div class="k">Hackathon · sudah berjalan</div>
+      <h3>Satu alur yang berjalan</h3>
+      <ul class="list">
+        <li>Bot Tapak AI: respons awal dan ekstraksi 7 data</li>
+        <li>Draf IASC per rekening dan kronologi polisi</li>
+        <li>Pencocokan chat ↔ transfer, transfer USDT dari BSC</li>
+        <li>EvidenceRegistry di BSC testnet dan verifier publik</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="k">Q4 2026 · Validasi</div>
+      <h3>Korban &amp; pilot pertama</h3>
+      <ul class="list">
+        <li>Uji dengan korban dan keluarga lewat komunitas</li>
+        <li>Wawancara tim fraud e-wallet dan payment gateway</li>
+        <li>Pilot berbayar pertama: intake terstruktur</li>
+        <li>Kampanye edukasi #JanganCidro</li>
+      </ul>
+    </div>
+    <div class="phase later">
+      <div class="k">2027 · Skala</div>
+      <h3>Modus &amp; regional</h3>
+      <ul class="list">
+        <li>Bukti transfer palsu untuk penjual, phishing</li>
+        <li>Paket klaim asuransi siber, rujukan legaltech</li>
+        <li>BNB Attestation Service, widget mitra</li>
+        <li>Malaysia, lalu ASEAN</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tracks"><span class="sec">Finance &amp; Commerce · perlindungan korban penipuan transfer</span><span>AI Agents · agen yang menemukan data hilang dan mencatat on-chain</span></div>
+  <p class="pageno">13</p>
+</section>
+
+<!-- 14 Team -->
+<section class="slide" aria-label="Tim">
+  <p class="eyebrow">Tim</p>
+  <h2>Siapa yang membangun Tapak.</h2>
+  <div class="team" style="grid-template-columns:repeat(3,1fr)">
+    <div class="member"><img class="ph" src="img/team-bagus.jpg" alt="Foto Bagus Kurnianto" style="border:0;object-fit:cover"><h3>Bagus Kurnianto</h3><p><b style="color:var(--ink)">Product, AI agent &amp; pitch</b></p><p>Technical Lead di Sprout Digital Labs · AI Transformation Lead · 6+ tahun. Memimpin tim pemenang hackathon (SixSeven AI, AuraCheck) dan menskalakan platform POS Labamu ke 1 juta+ pengguna.</p><p class="mono" style="font-family:var(--mono);font-size:13px">linkedin.com/in/baguskto</p></div>
+    <div class="member"><img class="ph" src="img/team-alfatih.jpg" alt="Foto Al Fatih Abdurrahman Syah" style="border:0;object-fit:cover"><h3>Al Fatih Abdurrahman Syah</h3><p><b style="color:var(--ink)">Web &amp; pengalaman pengguna</b></p><p>Developer · pemenang hackathon bersama tim AuraCheck (2026). Membangun web laporan dan halaman verifikasi bukti.</p><p class="mono" style="font-family:var(--mono);font-size:13px">linkedin.com/in/alfatihdevs</p></div>
+    <div class="member"><img class="ph" src="img/team-fian.jpg" alt="Foto Fian Febry Ispianto" style="border:0;object-fit:cover"><h3>Fian Febry Ispianto</h3><p><b style="color:var(--ink)">Backend, bot &amp; on-chain</b></p><p>Software Engineer · Full-stack JavaScript. Membangun bot Telegram, relayer, dan integrasi BNB Attestation Service.</p><p class="mono" style="font-family:var(--mono);font-size:13px">linkedin.com/in/fbi98</p></div>
+  </div>
+  <p class="pageno">14</p>
+</section>
+
+<!-- 15 Close -->
+<section class="slide dark close" aria-label="Penutup">
+  <div class="wordmark">Tap<i>ak</i></div>
+  <div class="tagline">Cintanya palsu.<br>Buktinya tetap utuh.</div>
+  <p class="lead">Saat korban panik, setiap menit berharga. Tapak memastikan lima menit pertama tidak terbuang, dan buktinya tetap utuh sampai ke tangan yang bisa menolong.</p>
+  <div class="asks">
+    <div><b>Coba demonya</b>t.me/TapakAiBot · tapak.bagusin.site</div>
+    <div><b>Periksa sendiri</b>EvidenceRegistry 0x61e1…e02f (BSC testnet) · tapak.bagusin.site/verify</div>
+    <div><b>Mari pilot</b>E-wallet, payment gateway, marketplace, dan bank yang ingin laporan korban siap diproses.</div>
+  </div>
+  <p class="pageno">15</p>
+</section>
+
+</div>
+</div>
+
+<nav class="nav" aria-label="Navigasi slide">
+  <button type="button" id="prev" aria-label="Slide sebelumnya">←</button>
+  <span class="count" id="count">1 / 15</span>
+  <button type="button" id="next" aria-label="Slide berikutnya">→</button>
+  <button type="button" id="fs" aria-label="Layar penuh">⤢</button>
+</nav>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var stage = document.getElementById('stage');
+  var count = document.getElementById('count');
+  var i = 0;
+  function fit(){
+    var s = Math.min(window.innerWidth / 1600, window.innerHeight / 900);
+    stage.style.transform = 'translate(-50%,-50%) scale(' + s + ')';
+  }
+  function show(n){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function(el, k){ el.classList.toggle('active', k === i); });
+    count.textContent = (i + 1) + ' / ' + slides.length;
+    try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+  }
+  document.getElementById('prev').addEventListener('click', function(){ show(i - 1); });
+  document.getElementById('next').addEventListener('click', function(){ show(i + 1); });
+  document.getElementById('fs').addEventListener('click', function(){
+    var el = document.documentElement;
+    if (!document.fullscreenElement && el.requestFullscreen) { el.requestFullscreen().catch(function(){}); }
+    else if (document.exitFullscreen) { document.exitFullscreen().catch(function(){}); }
+  });
+  document.addEventListener('keydown', function(e){
+    if (['ArrowRight','PageDown',' '].indexOf(e.key) > -1) { e.preventDefault(); show(i + 1); }
+    if (['ArrowLeft','PageUp'].indexOf(e.key) > -1) { e.preventDefault(); show(i - 1); }
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+  });
+  var tx = null;
+  document.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if (tx === null) return;
+    var dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 40) show(i + (dx < 0 ? 1 : -1));
+    tx = null;
+  });
+  window.addEventListener('resize', fit);
+  var start = parseInt((location.hash || '').replace('#', ''), 10);
+  fit();
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>

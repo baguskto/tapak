@@ -1,0 +1,16 @@
+{
+  "name": "tapak-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Tapak engine: AI analysis (MiniMax M3 via Cloudflare AI Gateway) and on-chain relayer for EvidenceRegistry. Runs on the VPS behind a Cloudflare Tunnel.",
+  "scripts": {
+    "start": "node src/server.js",
+    "check": "node --check src/server.js"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "fflate": "^0.8.2",
+    "viem": "^2.21.0"
+  }
+}

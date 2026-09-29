@@ -1,0 +1,27 @@
+.DS_Store
+node_modules/
+*.log
+.env
+.env.local
+# Large binaries (GitHub 100MB limit)
+*.zip
+*.mov
+*.mp4
+*.pack
+
+# Secrets & local state (never commit)
+.dev.vars
+*.env
+engine/.env
+worker/.wrangler/
+.wrangler/
+.clerk/
+
+# Build artifacts
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+
+# Unrelated local documents
+Sentinel*.pdf
+state.json

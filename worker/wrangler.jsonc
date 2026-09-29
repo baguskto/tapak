@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tapak",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "account_id": "12c8e84921e8ab4d3839df13d401b0ee",
+  "workers_dev": true,
+  "routes": [{ "pattern": "tapak.bagusin.site", "custom_domain": true }],
+  "observability": { "enabled": true },
+  "durable_objects": { "bindings": [{ "name": "STORE", "class_name": "Store" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Store"] }],
+  // Workers AI binding: requests go through Cloudflare AI Gateway ("default", auto-created on first request).
+  "ai": { "binding": "AI" },
+  "r2_buckets": [{ "binding": "EVIDENCE", "bucket_name": "tapak-evidence" }],
+  // Workers VPC service → VPS engine (127.0.0.1:8790) through the "tapak-engine" Cloudflare Tunnel.
+  "vpc_services": [{ "binding": "ENGINE", "service_id": "01a0edd1-d590-72d1-9cf3-e7d6b1ac38f1" }],
+  "vars": {
+    "BOT_USERNAME": "TapakAiBot",
+    "PUBLIC_BASE": "https://tapak.bagusin.site",
+    "ENGINE_ORIGIN": "http://127.0.0.1:8790",
+    "RPC_URL": "https://bsc-testnet-rpc.publicnode.com",
+    "EXPLORER": "https://testnet.bscscan.com",
+    "REGISTRY_ADDRESS": "",
+    "CLERK_PUBLISHABLE_KEY": "pk_test_c3VwcmVtZS1oZW4tNDExMy5jbGVyay5hY2NvdW50cy5kZXYk"
+  }
+}
