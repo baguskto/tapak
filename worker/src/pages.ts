@@ -55,18 +55,26 @@ pre.copy{white-space:pre-wrap;background:var(--cream);border:1px solid #ecebe2;b
 .res{border-radius:10px;padding:18px 20px;margin-top:16px;border:1px solid}.res.ok{background:var(--okbg);border-color:#dfe8c8}.res.bad{background:var(--badbg);border-color:#efcdbf}.res h3{margin-bottom:6px}
 .drop{display:block;border:1.5px dashed #c9cdb9;border-radius:10px;background:#fbfbf7;padding:28px;text-align:center;cursor:pointer}.drop:hover{border-color:var(--olive)}.drop input{display:block;margin:12px auto 0;font:inherit;max-width:100%}
 input[type=text],input:not([type]){font:inherit}
+.iasc-step{border-top:1px solid var(--line);padding:18px 0 6px}.iasc-step:first-of-type{border-top:0;padding-top:4px}.iasc-step h3{font-size:17px;margin-bottom:10px;display:flex;gap:10px;align-items:baseline}.iasc-step h3 small{font:600 11px 'DM Sans',sans-serif;letter-spacing:.1em;color:var(--olive2)}
+.fld{display:grid;grid-template-columns:minmax(120px,190px) 1fr auto;gap:6px 14px;align-items:start;padding:9px 0;border-bottom:1px dashed #e4e5da;font-size:14.5px}.fld>span:first-child{color:var(--muted)}.fld .v{font-weight:500;overflow-wrap:anywhere;white-space:pre-wrap}.fld .v.empty{color:var(--warn);font-weight:500}.fld .hint{grid-column:2/-1;font-size:13px;color:var(--warn);margin-top:-2px}
+.fld .cpy{padding:5px 10px;min-height:30px;font-size:12px;background:#fff;color:var(--ink);border:1px solid var(--line)}.fld .cpy:hover{border-color:var(--ink)}
+.txrow{background:var(--cream);border:1px solid #ecebe2;border-radius:8px;padding:6px 14px;margin:10px 0}.txrow .fld:last-child{border-bottom:0}
+.checklist{margin:0;padding-left:20px}.checklist li{margin:6px 0}details.iasc>summary{cursor:pointer;list-style:none}details.iasc>summary::-webkit-details-marker{display:none}
+details.iasc>summary .sum{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}details.iasc[open]>summary{margin-bottom:10px}
+@media(max-width:640px){.fld{grid-template-columns:1fr auto}.fld>span:first-child{grid-column:1/-1;font-size:13px}.fld .hint{grid-column:1/-1}}
 footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px;padding:28px 0 44px;margin-top:64px}
 @media(max-width:640px){nav a.hide-sm{display:none}.card{padding:18px}.amount{font-size:30px}}
 </style></head><body>
 <header class="top"><div class="wrap"><a class="brand" href="/" aria-label="Tapak beranda">${brandMark}</a><nav><a class="hide-sm" href="/verify">Cek bukti</a><a class="hide-sm" href="/app">Masuk</a><a class="btn small" href="https://t.me/TapakAiBot" target="_blank" rel="noopener">Buka bot ↗</a></nav></div></header>
 ${body}
 <footer><div class="wrap">Tapak menyiapkan <b>draf</b>, bukan laporan yang sudah terkirim. Laporkan lewat <a href="https://iasc.ojk.go.id">iasc.ojk.go.id</a>, jalur fraud bank/e-wallet, dan kantor polisi. Tapak tidak pernah menawarkan jasa pengembalian dana. Dibangun untuk Indonesia Web3 Hackathon 2026 · BNB Chain · <a href="https://github.com/baguskto/tapak">kode sumber</a>.</div></footer>
-<script>document.querySelectorAll('.cpy').forEach(b=>b.addEventListener('click',async()=>{const t=document.getElementById(b.dataset.t).innerText;try{await navigator.clipboard.writeText(t);b.textContent='Tersalin ✓'}catch(e){const r=document.createRange();r.selectNodeContents(document.getElementById(b.dataset.t));getSelection().removeAllRanges();getSelection().addRange(r);b.textContent='Tekan Ctrl/Cmd+C'}}))</script>
+<script>document.querySelectorAll('.cpy').forEach(b=>b.addEventListener('click',async()=>{const el=b.dataset.t?document.getElementById(b.dataset.t):b.previousElementSibling;const t=b.dataset.v??el.innerText;const label=b.textContent;try{await navigator.clipboard.writeText(t);b.textContent='Tersalin ✓';setTimeout(()=>b.textContent=label,1600)}catch(e){const r=document.createRange();r.selectNodeContents(el);getSelection().removeAllRanges();getSelection().addRange(r);b.textContent='Tekan Ctrl/Cmd+C'}}))</script>
 </body></html>`;
 
 type Analysis = {
   summary: string; drafts: any[]; transfers: any[]; requests: any[]; police_chronology: string; missing: any[];
   totals: { idr: number; usdt: number; estimated_idr: number; usdt_idr_rate: number }; evidence: any[]; anchor: any; manifest_sha256: string; generated_at: string;
+  iasc?: { reported: { name: string | null; phones: string[]; platform: string[]; accounts: string[] }; incident_time: string | null; chat_file: string | null };
 };
 
 const bankCode = (bank?: string) => {
@@ -76,14 +84,76 @@ const bankCode = (bank?: string) => {
   return b.replace(/[^A-Z]/g, '').slice(0, 3) || '—';
 };
 
+const EWALLETS = ['DANA', 'OVO', 'GOPAY', 'SHOPEEPAY', 'LINKAJA', 'SAKUKU', 'JENIUS PAY'];
+const providerCategory = (bank?: string) => (EWALLETS.some((w) => (bank ?? '').toUpperCase().replace(/\s/g, '').includes(w.replace(/\s/g, ''))) ? 'Penyedia Jasa Pembayaran (e-wallet)' : 'Bank');
+const masked = (acc?: string | null) => !acc || /[x*•]/i.test(acc);
+const hasSeconds = (d?: string | null) => /\d{1,2}[:.]\d{2}[:.]\d{2}/.test(d ?? '');
+
+/** One field of the IASC form: label, value to paste, copy button, and what to fix when the value is missing. */
+const fld = (label: string, value: string | null | undefined, hint = '') => {
+  const v = value && String(value).trim();
+  return `<div class="fld"><span>${esc(label)}</span>${v ? `<span class="v">${esc(v)}</span><button class="cpy" type="button" data-v="${esc(v)}">Salin</button>` : `<span class="v empty">Belum ada</span><span></span>`}${hint ? `<span class="hint">${esc(hint)}</span>` : ''}</div>`;
+};
+
+function iascSection(a: Analysis) {
+  const ia = a.iasc ?? { reported: { name: null, phones: [], platform: [], accounts: [] }, incident_time: null, chat_file: null };
+  const fileName = (id?: string) => a.evidence.find((e) => e.id === id)?.name ?? null;
+  const bankDrafts = a.drafts.map((d, i) => ({ d, i })).filter(({ d }) => d.currency !== 'USDT');
+  const walletDrafts = a.drafts.map((d, i) => ({ d, i })).filter(({ d }) => d.currency === 'USDT');
+
+  const todo: string[] = [];
+  if (!ia.reported.phones.length) todo.push('Nomor HP terlapor: buka profil kontak terlapor di WhatsApp, salin nomornya.');
+  if (bankDrafts.some(({ d }) => masked(d.source_account))) todo.push('Nomor rekening kamu lengkap: di bukti transfer nomornya tersensor. Lihat di aplikasi bank atau buku tabungan.');
+  if (bankDrafts.some(({ d }) => d.transfers.some((t: any) => !hasSeconds(t.date)))) todo.push('Detik waktu transfer: formulir meminta jam sampai detik. Lihat di mutasi rekening atau detail transaksi di aplikasi bank.');
+  if (!ia.chat_file) todo.push('Bukti percakapan: kirim export chat ke Tapak supaya tahu screenshot mana yang perlu diunggah.');
+
+  const forms = bankDrafts.map(({ d, i }, n) => {
+    const ids = new Set(d.transfers.map((t: any) => t.id));
+    const asks = a.requests.filter((r) => r.matched_transfer_id && ids.has(r.matched_transfer_id));
+    const sumber = [...ia.reported.platform, ...ia.reported.accounts].join(', ');
+    const txs = d.transfers.map((t: any, k: number) => `<div class="txrow">
+        ${fld(`Transaksi ${k + 1} · waktu`, t.date, hasSeconds(t.date) ? '' : 'Tambahkan detik dari mutasi rekening. Formulir memakai format jam:menit:detik.')}
+        ${fld('Nominal (angka saja)', t.amount != null ? String(Math.round(t.amount)) : null)}
+        ${fld('Unggah bukti (JPG/PNG/PDF, maks 5 MB)', fileName(t.file_id))}</div>`).join('');
+    return `<details class="card iasc" id="iasc-${i}"${n === 0 ? ' open' : ''}><summary><div class="sum"><div><div class="tag">Formulir IASC ${n + 1} / ${bankDrafts.length}</div><h3 style="margin-top:6px">${esc(d.source_bank ?? 'Rekening kamu')} → ${esc(d.destination_bank)} ${esc(d.destination_account)}</h3></div><span class="pill">${amount(d.total, d.currency)} · ${d.transfers.length} transfer</span></div></summary>
+      <div class="iasc-step"><h3><small>TAHAP 2</small>Informasi pihak terlapor</h3>
+        ${fld('Nama terlapor', d.recipient_name ?? ia.reported.name, ia.reported.name && d.recipient_name ? `Nama yang dipakai di chat: ${ia.reported.name}` : '')}
+        ${fld('Nomor telepon terlapor', ia.reported.phones.join(', '), ia.reported.phones.length ? '' : 'Tidak tertulis di chat. Salin dari profil kontak terlapor di WhatsApp.')}
+        ${fld('Sumber informasi penipuan', sumber, sumber ? 'Unggah screenshot profil/akun terlapor sebagai bukti sumber.' : 'Tulis dari mana kamu dihubungi (WhatsApp, Instagram, situs, dan lainnya).')}</div>
+      <div class="iasc-step"><h3><small>TAHAP 3</small>Informasi kejadian</h3>
+        ${fld('Waktu kejadian', ia.incident_time, 'Waktu terlapor pertama kali meminta uang. Ubah jika kejadian awalnya berbeda.')}
+        ${fld('Kronologi', d.chronology)}</div>
+      <div class="iasc-step"><h3><small>TAHAP 4</small>Informasi transaksi</h3>
+        ${fld('Bank/PJP kamu', d.source_bank)}
+        ${fld('Nomor rekening kamu', masked(d.source_account) ? null : d.source_account, masked(d.source_account) ? `Di bukti transfer tertulis "${d.source_account ?? '—'}" (tersensor). Isi nomor lengkap dari aplikasi bank.` : '')}
+        ${fld('Nama pemilik rekening kamu', d.sender)}
+        ${fld('Kategori penyelenggara terlapor', providerCategory(d.destination_bank), 'Perkiraan dari nama bank. Pilih yang sesuai di formulir.')}
+        ${fld('Bank/PJP terlapor', d.destination_bank)}
+        ${fld('Nomor rekening terlapor', d.destination_account)}
+        ${fld('Nama pemilik rekening terlapor', d.recipient_name)}
+        ${txs}
+        ${asks.length ? `<p class="muted" style="margin:14px 0 4px"><b style="color:var(--ink)">Bukti komunikasi:</b> IASC meminta gambar, bukan file .txt. Screenshot bagian chat ini:</p><ul class="checklist">${asks.map((r) => `<li>${esc(r.tanggal)}: <i>"${esc(r.kutipan)}"</i></li>`).join('')}</ul>` : ''}</div>
+      <div class="iasc-step"><h3><small>TAHAP 5</small>Kesediaan melapor</h3><p class="muted" style="margin:0">Baca pernyataannya, centang, isi captcha, lalu kirim sendiri. Simpan nomor tiket yang diberikan.</p></div>
+    </details>`;
+  }).join('');
+
+  const wallets = walletDrafts.length ? `<div class="note" style="background:#fff"><span class="noteicon">!</span><div><b>Transfer ke wallet kripto (${walletDrafts.map(({ d }) => amount(d.total, d.currency)).join(', ')})</b><br><span class="muted">Formulir IASC menelusuri rekening di bank/PJP, jadi alamat wallet pribadi kemungkinan tidak bisa dipilih sebagai rekening terlapor. Masukkan transfer ini ke laporan polisi (kronologi di bawah sudah memuatnya), dan hubungi exchange tempat kamu membeli USDT. Jika USDT dibeli dengan transfer ke rekening penjual, rekening penjual itu bisa dilaporkan ke IASC.</span></div></div>` : '';
+
+  return `<h2 id="iasc">Isi formulir IASC</h2>
+  <p class="muted" style="margin-top:-6px">Buka <a href="https://iasc.ojk.go.id/Guest/LaporanV2" target="_blank" rel="noopener">formulir IASC</a> di tab lain, lalu salin isian di bawah sesuai tahapnya. Satu formulir untuk satu rekening kamu ke satu rekening terlapor. Tapak tidak mengirim apa pun atas namamu.</p>
+  <div class="grid g2">
+    <div class="card"><div class="tag">Tahap 1 · Siapkan dulu</div><ul class="checklist" style="margin-top:10px"><li>Foto/scan KTP (maks 1 MB) dan nomor identitas.</li><li>Nomor HP dan email aktif. OJK akan menghubungi lewat keduanya.</li><li>Jika melapor untuk orang lain: surat kuasa dan KTP korban.</li><li>Data ini diisi langsung di formulir IASC. Tapak tidak menyimpannya.</li></ul></div>
+    <div class="card"><div class="tag">Lengkapi sebelum mengisi</div>${todo.length ? `<ul class="checklist" style="margin-top:10px">${todo.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>` : '<p class="muted">Semua data dari bukti sudah tersedia.</p>'}</div>
+  </div>
+  <div class="grid" style="margin-top:18px">${forms || '<p class="muted">Belum ada transfer bank/e-wallet yang terbukti.</p>'}${wallets}</div>`;
+}
+
 export function reportPage(c: any, explorer: string) {
   if (!c.analysis) {
     return layout('Draf belum siap · Tapak', `<main class="wrap"><h2>Draf belum disusun</h2><p class="muted">Kasus ini punya ${c.files.length} bukti. Ketik <b>/laporan</b> di bot Telegram untuk menyusun draf.</p></main>`);
   }
   const a: Analysis = JSON.parse(c.analysis);
   const drafts = a.drafts.map((d, i) => {
-    const txs = d.transfers.map((t: any) => `${t.date ?? '—'} · ${amount(t.amount, t.currency)}${t.reference ? ` · ref ${t.reference}` : ''}`).join('\n');
-    const text = `Rekening/wallet tujuan: ${d.destination_bank ?? ''} ${d.destination_account ?? ''}\nNama penerima: ${d.recipient_name ?? '—'}\nTotal: ${amount(d.total, d.currency)}\nTransaksi:\n${txs}\n\nKronologi:\n${d.chronology}`;
     const first = d.transfers[0] ?? {};
     const refs = d.transfers.map((t: any) => t.reference).filter(Boolean).map((r: string) => (/^0x[0-9a-f]{64}$/i.test(r) ? `${r.slice(0, 6)}…${r.slice(-5)}` : r));
     const needs = d.missing_fields?.length
@@ -96,7 +166,7 @@ export function reportPage(c: any, explorer: string) {
       <div class="kv"><span>Nomor referensi</span><b>${refs.length ? esc(refs.join(', ')) : 'belum terbaca'}</b></div>
       <div class="kv"><span>Jumlah transfer</span><b>${d.transfers.length}</b></div>
       ${needs}
-      <details class="copybox"><summary>Lihat teks draf untuk formulir IASC</summary><pre class="copy" id="d${i}">${esc(text)}</pre><button class="cpy" data-t="d${i}">Salin draf</button></details></div>`;
+      ${d.currency === 'USDT' ? `<p class="muted" style="margin:14px 0 0;font-size:14px">Untuk laporan polisi dan exchange. <a href="#iasc">Kenapa tidak ke IASC?</a></p>` : `<p style="margin:14px 0 0;font-size:14px"><a href="#iasc-${i}">Isi formulir IASC untuk rekening ini ↓</a></p>`}</div>`;
   }).join('');
 
   const reqs = a.requests.map((r) => {
@@ -121,6 +191,7 @@ export function reportPage(c: any, explorer: string) {
   <div class="ai-card" style="margin-top:28px"><div class="ai-top"><span class="ai-symbol">✧</span> Tapak AI <small>RINGKASAN KASUS</small></div><p>${esc(a.summary)}</p></div>
   <div class="urgent" style="margin-top:18px"><b>Belum menelepon jalur fraud bank asal?</b> Lakukan sekarang dan minta nomor laporan. Satu formulir IASC untuk satu rekening tujuan. Laporan polisi tetap perlu dibuat.</div>
   <h2>Satu draf untuk setiap rekening tujuan</h2><div class="grid g2">${drafts || '<p class="muted">Belum ada transfer terbukti.</p>'}</div>
+  ${iascSection(a)}
   <h2>Permintaan di chat, dipasangkan dengan transfer</h2><div class="card tbl"><table><thead><tr><th>Tanggal</th><th>Permintaan terlapor</th><th>Transfer</th><th style="text-align:right">Nilai</th><th>Bukti</th></tr></thead><tbody>${reqs || '<tr><td colspan="5" class="muted">Kirim export chat WhatsApp untuk pencocokan.</td></tr>'}</tbody></table></div>
   ${a.missing.length ? `<h2>Bukti yang masih kurang</h2><div class="grid">${a.missing.map((m) => `<div class="note" style="margin:0;background:#fff"><span class="noteicon">!</span><div><b>${esc(m.deskripsi)}</b><br><span class="muted">${esc(m.saran)}</span></div></div>`).join('')}</div>` : ''}
   <h2>Kronologi untuk laporan polisi</h2><div class="card"><pre class="copy" id="pol">${esc(a.police_chronology)}</pre><button class="cpy" data-t="pol">Salin kronologi</button></div>

@@ -4,7 +4,7 @@
 
 1. tells them to call their bank's **fraud line first** and ask for a report number,
 2. reads their **transfer receipts** (MiniMax M3 vision) and extracts the 7 data points that bank fraud teams and IASC ask for,
-3. groups transfers into **one IASC report draft per destination account** (IASC requires one form per account) plus a **police chronology**,
+3. groups transfers into **one IASC report per victim account → reported account** (the official IASC FAQ: one form covers transfers from one victim account to one reported account) and lays each one out **in the order of the real IASC form (steps 2–4)** with a copy button per field, a list of what the victim still has to fill in (e.g. their full account number when the receipt masks it, the scammer's phone number), and which chat screenshots to upload. The IASC chronology is assembled from verbatim chat quotes and proven transfers only, so stories cannot mix between accounts. Tapak never submits the form. Plus a **police chronology**,
 4. reads the **WhatsApp chat export**, matches every money request to a proven transfer and flags **missing evidence**,
 5. pulls **USDT transfers straight from BNB Smart Chain**, and
 6. anchors the **SHA-256 fingerprint of every evidence file** in the `EvidenceRegistry` contract on BNB Chain, so anyone can later check that a file is byte-for-byte unchanged.
