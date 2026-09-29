@@ -200,8 +200,8 @@ async function go(){const files=[...$('files').files];const wallet=$('wallet').v
  $('prog').textContent='Agen menyusun draf dan mencatat sidik jari bukti di BNB Chain…';await api('/api/me/cases/'+c.id+'/analyze',{method:'POST'});
  for(let i=0;i<40;i++){await new Promise(r=>setTimeout(r,5000));const d=await loadCases();const me=d.cases.find(x=>x.id===c.id);if(me&&me.status==='ready'){$('prog').innerHTML='Draf siap ✓ <a href="/k/'+me.public_token+'">Buka draf</a>';break;}}
  }catch(e){$('prog').textContent='Gagal: '+e.message}finally{$('go').disabled=false}}
-window.addEventListener('load',async()=>{await window.Clerk.load();const render=async()=>{const u=window.Clerk.user;$('signed-out').hidden=!!u;$('signed-in').hidden=!u;
- if(!u){window.Clerk.mountSignIn($('sign-in'),{appearance:ap});return;}$('uname').textContent=u.firstName||u.primaryEmailAddress?.emailAddress||'';window.Clerk.mountUserButton($('user-button'),{appearance:ap});loadCases().catch(e=>$('cases').innerHTML='<tr><td colspan="7">'+e.message+'</td></tr>');};
+window.addEventListener('load',async()=>{await window.Clerk.load({signInForceRedirectUrl:'/app',signUpForceRedirectUrl:'/app',afterSignOutUrl:'/'});const render=async()=>{const u=window.Clerk.user;$('signed-out').hidden=!!u;$('signed-in').hidden=!u;
+ if(!u){window.Clerk.mountSignIn($('sign-in'),{appearance:ap,forceRedirectUrl:'/app',signUpForceRedirectUrl:'/app'});return;}$('uname').textContent=u.firstName||u.primaryEmailAddress?.emailAddress||'';window.Clerk.mountUserButton($('user-button'),{appearance:ap});loadCases().catch(e=>$('cases').innerHTML='<tr><td colspan="7">'+e.message+'</td></tr>');};
  render();window.Clerk.addListener(()=>render());$('go').onclick=go;$('link').onclick=async()=>{const d=await api('/api/me/link-code',{method:'POST'});$('code').innerHTML='Kirim <b>/hubungkan '+d.code+'</b> ke <a href="https://t.me/${esc(bot)}">@${esc(bot)}</a> (berlaku '+d.expires_in_minutes+' menit)';};});
 </script>`);
 }
